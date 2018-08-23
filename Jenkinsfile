@@ -35,43 +35,12 @@ node {
      }
   }
 
-  if(env.BRANCH_NAME == 'master'){
-
-    stage('Validate Build') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' clean package"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" clean package/)
-      }
-    }
-
-  }
-
-  if(env.BRANCH_NAME == 'develop'){
-    stage('Snapshot Build And Upload Artifacts') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' clean deploy"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" clean deploy/)
-      }
-    }
-
-    stage('Deploy') {
-       sh 'curl -u jenkins:jenkins -T target/**.war "http://localhost:8080/manager/text/deploy?path=/devops&update=true"'
-    }
-
-    stage("Smoke Test"){
-       sh "curl --retry-delay 10 --retry 5 http://localhost:8080/devops"
-    }
-
-  }
-
-  if(env.BRANCH_NAME ==~ /release.*/){
+	
     stage('Release Build And Upload Artifacts') {
       if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' clean release:clean release:prepare release:perform"
+         sh "'${mvnHome}/bin/mvn' clean release:clean release:prepare release:perform -DdryRun=true"
       } else {
-         bat(/"${mvnHome}\bin\mvn" clean release:clean release:prepare release:perform/)
+         bat(/"${mvnHome}\bin\mvn" clean release:clean release:prepare release:perform -DdryRun=true/)
       }
     }
      stage('Deploy') {
@@ -85,9 +54,8 @@ node {
      stage("Deploy from Tag to QA"){
 	echo 'Build info ${scm}'
         echo "Deploying war from http://localhost:8081/artifactory/libs-release-local/com/example/devops/${tag:1}/devops-${tag:1}.war"
-#       sh 'curl -O http://localhost:8081/artifactory/libs-release-local/com/example/devops/${tag:1}/devops-${tag:1}.war'
     }
 
-  }
+  
 
 }
