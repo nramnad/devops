@@ -82,11 +82,11 @@ node {
          sh "curl --retry-delay 10 --retry 5 http://localhost:8080/devops"
      }
 
-#     stage("Deploy from Tag to QA"){
-		echo 'Build info ${scm}
+     stage("Deploy from Tag to QA"){
+	echo 'Build info ${scm}'
         echo "Deploying war from http://localhost:8081/artifactory/libs-release-local/com/example/devops/${tag:1}/devops-${tag:1}.war"
-#        sh 'curl -O http://localhost:8081/artifactory/libs-release-local/com/example/devops/${tag:1}/devops-${tag:1}.war'
-#     }
+#       sh 'curl -O http://localhost:8081/artifactory/libs-release-local/com/example/devops/${tag:1}/devops-${tag:1}.war'
+    }
 
   }
 
