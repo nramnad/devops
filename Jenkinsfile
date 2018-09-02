@@ -6,9 +6,6 @@ node {
 
   stage('Prepare') {
     mvnHome = tool 'maven'
-    pom = readMavenPom file: 'pom.xml'
-    artifactVersion = pom.version.replace("-SNAPSHOT", "")
-    tagVersion = 'v'+artifactVersion
   }
   
   stage('Checkout') {
@@ -75,6 +72,9 @@ node {
   }
 
   if(env.BRANCH_NAME ==~ /release.*/){
+    pom = readMavenPom file: 'pom.xml'
+    artifactVersion = pom.version.replace("-SNAPSHOT", "")
+    tagVersion = 'v'+artifactVersion
     
     stage('Release Build And Upload Artifacts') {
       if (isUnix()) {
