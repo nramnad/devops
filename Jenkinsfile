@@ -95,7 +95,7 @@ node {
      stage("Deploy from Tag to QA"){
         echo "${tagVersion}"
         echo "Deploying war from http://localhost:8081/artifactory/libs-release-local/com/example/devops/${artifactVersion}/devops-${artifactVersion}.war"
-        sh 'curl -O http://localhost:8081/artifactory/libs-release-local/com/example/devops/${artifactVersion}/devops-${artifactVersion}.war'
+        sh "curl -O http://localhost:8081/artifactory/libs-release-local/com/example/devops/${artifactVersion}/devops-${artifactVersion}.war"
      }
 
   }
