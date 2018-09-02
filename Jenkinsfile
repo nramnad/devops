@@ -5,11 +5,8 @@ node {
   def tagVersion
 
   stage('Prepare') {
-     git url: 'git@github.com:nandudemy/devops.git'
+     git url: 'git@github.com:nandudemy/devops.git', branch: "${branch}"
      mvnHome = tool 'maven'
-     pom = readMavenPom file: 'pom.xml'
-     artifactVersion = pom.version.replace("-SNAPSHOT", "")
-     tagVersion = 'v'+artifactVersion
   }
 
   stage('Build') {
